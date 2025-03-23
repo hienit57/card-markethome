@@ -1,0 +1,28 @@
+{
+  "@@locale": "en",
+  "appTitle": "Flutter i18n",
+  "@appTitle": {
+    "description": "Main application title"
+  },
+  "welcome": "Welcome!",
+  "referralCode": "Mã giới thiệu",
+  "enterReferralCode": "Nhập ID MarShop giới thiệu",
+  "marshop_referral_code": "Bạn chưa có MarShop giới thiệu ?",
+  "payment": "Thanh toán",
+  "infomation": "Thông tin",
+  "confirm": "Xác nhận",
+  "save_qr_code": "Lưu mã QR",
+  "payment_step1": "Bước 1: Lưu mã QR về điện thoại",
+  "payment_step2": "Bước 2: Dùng app ngân hàng để tải mã QR",
+  "payment_step3": "Bước 3: Xác nhận chuyển tiền",
+  "contact": "Liên hệ",
+  "home": "Trang chủ",
+  "share_money_info": "Thông tin chia tiền",
+  "payment_sucess_content": "Vui lòng gửi hình ảnh thanh toán thành công để việc xác nhận được diễn ra nhanh chóng",
+  "payment_sucess": "Thanh toán thành công",
+  "payment_fail": "Thanh toán thất bại",
+  "total_payment_money": "Tổng tiền thanh toán",
+  "marshop_money": "Số tiền MarShop nhận được:",
+  "boss_group_money": "Số tiền Boss Group nhận được:",
+  "boss_team_money": "Số tiền Boss Team nhận được:"
+}
