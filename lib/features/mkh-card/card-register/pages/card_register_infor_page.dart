@@ -5,30 +5,32 @@ class CardRegisterInforPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: PackageIntroductionAndTermWidget(),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: CardPackageSelectorWidget(),
-        ),
-        const SizedBox(height: 16),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: CardOwnerInforWidget(),
-        ),
-        const SizedBox(height: 16),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: ReferralCodeWidget(),
-        ),
-        const SizedBox(height: 16),
-        _buildButtonBottom(context)
-      ],
-    );
+    return Builder(builder: (context) {
+      return ListView(
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: PackageIntroductionAndTermWidget(),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: CardPackageSelectorWidget(),
+          ),
+          const SizedBox(height: 16),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: CardOwnerInforWidget(),
+          ),
+          const SizedBox(height: 16),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: ReferralCodeWidget(),
+          ),
+          const SizedBox(height: 16),
+          _buildButtonBottom(context)
+        ],
+      );
+    });
   }
 
   Widget _buildButtonBottom(BuildContext context) {

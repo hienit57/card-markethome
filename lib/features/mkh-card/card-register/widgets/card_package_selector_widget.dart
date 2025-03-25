@@ -31,7 +31,7 @@ class CardPackageSelectorWidget extends StatelessWidget {
               child: Column(
                 children: [
                   RowTitleContentWidget(
-                    title: 'Mua thẻ MarketHome',
+                    title: 'Nạp hạn mức thẻ',
                     titleStyle: context.text.titleLarge?.copyWith(
                       fontSize: 16,
                       color: AppColors.textPrimary,

@@ -57,13 +57,19 @@ class HomeReviewsWidget extends StatelessWidget {
           children: [
             Row(
               children: [
-                Container(
+                // Container(
+                //   width: 36,
+                //   height: 36,
+                //   decoration: const BoxDecoration(
+                //     shape: BoxShape.circle,
+                //     color: AppColors.accent4,
+                //   ),
+                // ),
+                const AppImage(
+                  assetImage: Assets.lib_assets_icons_ic_tab_profile_outline,
                   width: 36,
                   height: 36,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.accent4,
-                  ),
+                  fit: BoxFit.fill,
                 ),
                 const SizedBox(width: 8),
                 Column(

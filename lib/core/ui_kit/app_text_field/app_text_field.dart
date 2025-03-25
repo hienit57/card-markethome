@@ -1,7 +1,6 @@
 import 'package:card_markethome/index.dart';
-import 'package:flutter/services.dart';
 
-class AppTextField extends StatelessWidget {
+class AppTextField extends StatefulWidget {
   const AppTextField({
     super.key,
     this.placeholder,
@@ -74,19 +73,24 @@ class AppTextField extends StatelessWidget {
   final TextStyle? hintStyle;
 
   @override
+  State<AppTextField> createState() => _AppTextFieldState();
+}
+
+class _AppTextFieldState extends State<AppTextField> {
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(borderRadius ?? 0),
+        borderRadius: BorderRadius.circular(widget.borderRadius ?? 0),
       ),
       child: TextFormField(
-        readOnly: readOnly ?? false,
-        textInputAction: textInputAction ?? TextInputAction.done,
-        minLines: minLine ?? 1,
-        maxLength: maxLength,
+        readOnly: widget.readOnly ?? false,
+        textInputAction: widget.textInputAction ?? TextInputAction.done,
+        minLines: widget.minLine ?? 1,
+        maxLength: widget.maxLength,
         autovalidateMode:
-            autovalidateMode ?? AutovalidateMode.onUserInteraction,
+            widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
         enableInteractiveSelection: true,
 
         contextMenuBuilder: (context, editableTextState) {
@@ -94,21 +98,22 @@ class AppTextField extends StatelessWidget {
             editableTextState: editableTextState,
           );
         },
-        initialValue: initialValue,
-        controller: controller,
-        textAlign: textAlign,
-        onTap: onTap,
-        inputFormatters: inputFormatters,
-        onFieldSubmitted: onFieldSubmitted,
-        onEditingComplete: onEditingComplete,
+
+        initialValue: widget.initialValue,
+        controller: widget.controller,
+        textAlign: widget.textAlign,
+        onTap: widget.onTap,
+        inputFormatters: widget.inputFormatters,
+        onFieldSubmitted: widget.onFieldSubmitted,
+        onEditingComplete: widget.onEditingComplete,
         enableSuggestions: false,
         autocorrect: false,
         style: TextStyle(
-          color: textColor ?? AppColors.neutral500,
-          fontSize: fontSize ?? 14,
-          fontWeight: fontWeight ?? FontWeight.w400,
+          color: widget.textColor ?? AppColors.neutral500,
+          fontSize: widget.fontSize ?? 14,
+          fontWeight: widget.fontWeight ?? FontWeight.w400,
           //fontFamily: AppFonts.svnGotham,
-          decoration: inpuDecoration,
+          decoration: widget.inpuDecoration,
         ),
         decoration: InputDecoration(
           errorMaxLines: 3,
@@ -116,55 +121,55 @@ class AppTextField extends StatelessWidget {
             color: Colors.red,
             fontSize: 12,
           ),
-          contentPadding:
-              contentPadding ?? const EdgeInsets.only(left: 24, right: 12),
+          contentPadding: widget.contentPadding ??
+              const EdgeInsets.only(left: 24, right: 12),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(borderRadius ?? 0),
+            borderRadius: BorderRadius.circular(widget.borderRadius ?? 0),
             borderSide: BorderSide(
-              color: borderColor ?? AppColors.colorE8E8E8,
+              color: widget.borderColor ?? AppColors.colorE8E8E8,
             ),
           ),
           errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(borderRadius ?? 0),
+            borderRadius: BorderRadius.circular(widget.borderRadius ?? 0),
             borderSide: const BorderSide(
               color: Colors.red,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(borderRadius ?? 0),
+            borderRadius: BorderRadius.circular(widget.borderRadius ?? 0),
             borderSide: BorderSide(
-              color: borderColor ?? AppColors.neutral300,
+              color: widget.borderColor ?? AppColors.neutral300,
             ),
           ),
-          hintText: placeholder,
-          hintStyle: hintStyle ??
+          hintText: widget.placeholder,
+          hintStyle: widget.hintStyle ??
               context.text.bodySmall?.copyWith(
                 color: AppColors.color868686,
                 fontSize: 12,
               ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(borderRadius ?? 0),
+            borderRadius: BorderRadius.circular(widget.borderRadius ?? 0),
             borderSide: BorderSide(
-              color: borderColor ?? AppColors.neutral500,
+              color: widget.borderColor ?? AppColors.neutral500,
             ),
           ),
-          suffixIcon: suffix != null
+          suffixIcon: widget.suffix != null
               ? Padding(
                   padding: const EdgeInsets.only(right: 12),
-                  child: suffix,
+                  child: widget.suffix,
                 )
               : const SizedBox(),
           suffixIconConstraints: const BoxConstraints(),
-          prefixIcon: prefix,
+          prefixIcon: widget.prefix,
         ),
-        focusNode: focusNode,
+        focusNode: widget.focusNode,
         //style: textFieldStyle?.textStyle,
-        obscureText: obscureText,
-        keyboardType: keyboardType,
-        validator: validator,
-        enabled: enabled,
-        onChanged: onChanged,
-        maxLines: maxLines,
+        obscureText: widget.obscureText,
+        keyboardType: widget.keyboardType,
+        validator: widget.validator,
+        enabled: widget.enabled,
+        onChanged: widget.onChanged,
+        maxLines: widget.maxLines,
       ),
     );
   }

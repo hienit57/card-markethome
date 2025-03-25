@@ -1,4 +1,5 @@
 import 'package:card_markethome/index.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class CardInformationWidget extends StatelessWidget {
   const CardInformationWidget({super.key, required this.cardInfor});
@@ -26,6 +27,11 @@ class CardInformationWidget extends StatelessWidget {
   }
 
   Widget _userInfor(BuildContext context) {
+    final qrData = {
+      "Tên chủ thẻ": cardInfor?.user?.displayName,
+      "ID": cardInfor?.user?.pDoneId,
+      "Hạng thẻ": cardInfor?.rank?.name,
+    };
     return Row(
       children: [
         ClipRRect(
@@ -74,10 +80,30 @@ class CardInformationWidget extends StatelessWidget {
           ],
         ),
         const Spacer(),
-        // Assets.lib_assets_images_img_frame_qr.image(
-        //   width: 32,
-        //   height: 32,
-        // )
+        Stack(
+          children: [
+            const AppImage(
+              assetImage: Assets.lib_assets_images_img_frame_qr,
+              width: 53,
+              height: 53,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: Container(
+                width: 45,
+                height: 45,
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: QrImageView(
+                  data: jsonEncode(qrData),
+                  size: 45,
+                ),
+              ),
+            )
+          ],
+        )
       ],
     );
   }

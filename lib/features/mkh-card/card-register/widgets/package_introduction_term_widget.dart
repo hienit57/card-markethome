@@ -55,10 +55,12 @@ class PackageIntroductionAndTermWidget extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 3),
-                        Assets.lib_assets_icons_ic_arrow_right.svg(
-                          color: AppColors.textAccent,
+                        const AppImage(
+                          assetImage: Assets.lib_assets_icons_ic_arrow_right,
                           width: 12,
                           height: 12,
+                          fit: BoxFit.fill,
+                          color: AppColors.textAccent,
                         ),
                         const SizedBox(width: 6),
                       ],

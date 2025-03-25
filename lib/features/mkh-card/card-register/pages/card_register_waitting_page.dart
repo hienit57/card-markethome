@@ -36,6 +36,8 @@ class CardRegisterWaittingPage extends StatefulWidget {
 
 class _CardRegisterWaittingPageState extends State<CardRegisterWaittingPage>
     with TimerMixin {
+  final isShowDialog = ValueNotifier<bool>(false);
+
   @override
   void initState() {
     super.initState();
@@ -60,6 +62,9 @@ class _CardRegisterWaittingPageState extends State<CardRegisterWaittingPage>
               final metadata = data['metadata'];
               if (metadata is Map<String, dynamic> &&
                   metadata['transactionId'] != null) {
+                if (isShowDialog.value) {
+                  ConfirmationDialog.hide(context);
+                }
                 Navigation.pop(
                   context,
                   result: EventTransactionEnum.agentConfirm,
@@ -173,13 +178,18 @@ class _CardRegisterWaittingPageState extends State<CardRegisterWaittingPage>
                         fontSize: 16,
                       ),
                       onTap: () async {
+                        isShowDialog.value = true;
                         final result = await ConfirmationDialog.show(
                           context: context,
                           title: 'Xác nhận',
                           message:
                               'Bạn có chắc chắn muốn huỷ đăng ký thẻ MarketHome không?',
-                          onCancel: () => Navigation.pop(context),
+                          onCancel: () {
+                            isShowDialog.value = false;
+                            Navigation.pop(context);
+                          },
                           onConfirm: () {
+                            isShowDialog.value = false;
                             Navigation.pop(context, result: true);
                           },
                         );

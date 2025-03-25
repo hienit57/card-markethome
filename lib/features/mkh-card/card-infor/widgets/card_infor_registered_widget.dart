@@ -66,14 +66,14 @@ class CardInforRegisteredWidget extends StatelessWidget {
               cardInfor: userCardInfo?.wallet,
             ),
           ),
-          Positioned(
-            bottom: 34,
-            left: 0,
-            right: 0,
-            child: CardInforRenewNowWidget(
-              cardInfor: userCardInfo?.wallet,
-            ),
-          ),
+          // Positioned(
+          //   bottom: 34,
+          //   left: 0,
+          //   right: 0,
+          //   child: CardInforRenewNowWidget(
+          //     cardInfor: userCardInfo?.wallet,
+          //   ),
+          // ),
           Positioned(
             bottom: 0,
             left: 0,
@@ -148,7 +148,13 @@ class CardInforRegisteredWidget extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 4),
-                  Assets.lib_assets_icons_ic_arrow_right.svg()
+                  const AppImage(
+                    assetImage: Assets.lib_assets_icons_ic_arrow_right,
+                    width: 16,
+                    height: 16,
+                    fit: BoxFit.fill,
+                    color: AppColors.white,
+                  )
                 ],
               ),
             ),

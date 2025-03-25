@@ -297,9 +297,9 @@ class Assets {
   static const AssetGenImage lib_assets_images_img_frame_qr =
       AssetGenImage('lib/assets/images/img_frame_qr.png');
 
-  /// File path: lib/assets/images/img_home_convert_d_one.svg
-  static const SvgGenImage lib_assets_images_img_home_convert_d_one =
-      SvgGenImage('lib/assets/images/img_home_convert_d_one.svg');
+  /// File path: lib/assets/images/img_home_convert_d_one.png
+  static const AssetGenImage lib_assets_images_img_home_convert_d_one =
+      AssetGenImage('lib/assets/images/img_home_convert_d_one.png');
 
   /// File path: lib/assets/images/img_home_nav_card_class.svg
   static const SvgGenImage lib_assets_images_img_home_nav_card_class =
@@ -329,9 +329,9 @@ class Assets {
   static const AssetGenImage lib_assets_images_img_home_ricebook =
       AssetGenImage('lib/assets/images/img_home_ricebook.png');
 
-  /// File path: lib/assets/images/img_member_review.svg
-  static const SvgGenImage lib_assets_images_img_member_review =
-      SvgGenImage('lib/assets/images/img_member_review.svg');
+  /// File path: lib/assets/images/img_member_review.png
+  static const AssetGenImage lib_assets_images_img_member_review =
+      AssetGenImage('lib/assets/images/img_member_review.png');
 
   /// File path: lib/assets/images/img_rice_book_demo.png
   static const AssetGenImage lib_assets_images_img_rice_book_demo =

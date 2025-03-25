@@ -310,7 +310,7 @@ class CardRegisterConfirmPage extends StatelessWidget {
                     path: NavigationRouter.cardRegisterWaitting.path,
                     params: {
                       'title':
-                          'Yêu cầu mua gói D-One của bạn đã được gửi đến đại lý MarketHome để phê duyệt Vui lòng chờ trong giây lát',
+                          'Yêu cầu nạp hạn mức thẻ của bạn đã được gửi đến Đại lý MarketHome đang chờ phê duyệt. Vui lòng chờ trong giây lát.',
                       'isShowCountdown': true,
                       'typeListenSocket': TypeListenSocketEnum
                           .userPersonalDOneTransactionAcknowledged,

@@ -2,36 +2,43 @@ part of 'home_cubit.dart';
 
 class HomeState extends Equatable {
   const HomeState({
-    this.status = FormzSubmissionStatus.initial,
-    this.characters = const [],
-    this.hasReachedEnd = false,
-    this.currentPage = 1,
+    this.onFetchRiceBookPackages = FormzSubmissionStatus.initial,
+    this.packagesPage = 1,
+    this.canLoadMorepackages = false,
+    this.packages = const [],
+    this.error = '',
   });
 
-  final FormzSubmissionStatus status;
-  final List<Character> characters;
-  final bool hasReachedEnd;
-  final int currentPage;
+  final FormzSubmissionStatus onFetchRiceBookPackages;
+  final int packagesPage;
+  final bool canLoadMorepackages;
+  final List<RicebookPackageModel> packages;
+
+  final String error;
 
   HomeState copyWith({
-    FormzSubmissionStatus? status,
-    List<Character>? characters,
-    bool? hasReachedEnd,
-    int? currentPage,
+    FormzSubmissionStatus? onFetchRiceBookPackages,
+    int? packagesPage,
+    bool? canLoadMorepackages,
+    List<RicebookPackageModel>? packages,
+    String? error,
   }) {
     return HomeState(
-      status: status ?? this.status,
-      characters: characters ?? this.characters,
-      hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
-      currentPage: currentPage ?? this.currentPage,
+      onFetchRiceBookPackages:
+          onFetchRiceBookPackages ?? this.onFetchRiceBookPackages,
+      packagesPage: packagesPage ?? this.packagesPage,
+      canLoadMorepackages: canLoadMorepackages ?? this.canLoadMorepackages,
+      packages: packages ?? this.packages,
+      error: error ?? this.error,
     );
   }
 
   @override
-  List<Object> get props => [
-        status,
-        characters,
-        hasReachedEnd,
-        currentPage,
+  List<Object?> get props => [
+        onFetchRiceBookPackages,
+        packagesPage,
+        canLoadMorepackages,
+        packages,
+        error,
       ];
 }

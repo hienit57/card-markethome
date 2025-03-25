@@ -14,18 +14,12 @@ class CardClassWidget extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    return Stack(
-      children: [
-        SizedBox(
-          height: 309,
-          width: context.maxWidth,
-          child: const AppImage(
-            assetImage: Assets.lib_assets_images_img_bg_card,
-            fit: BoxFit.cover,
-          ),
-        ),
-        const CardClassCarouselWidget(),
-      ],
+    return BlocBuilder<CardClassCubit, CardClassState>(
+      buildWhen: (previous, current) =>
+          previous.onFetchCardRanks != current.onFetchCardRanks,
+      builder: (context, state) {
+        return CardClassCarouselWidget(cardRanks: state.cardRanks);
+      },
     );
   }
 }

@@ -19,6 +19,8 @@ class CardRegisterCubit extends Cubit<CardRegisterState> {
   final debounceHelper = DebounceHelper(milliseconds: 300);
 
   final nameCtrl = TextEditingController();
+  final nameFocusNode = FocusNode();
+
   final idVdoneCtrl = TextEditingController();
   final phoneCtrl = TextEditingController();
   final emailCtrl = TextEditingController();
@@ -144,6 +146,9 @@ class CardRegisterCubit extends Cubit<CardRegisterState> {
   }
 
   Future<void> createBillBuyCard() async {
+    emit(state.copyWith(
+      onCreateBillBuyCard: FormzSubmissionStatus.inProgress,
+    ));
     try {
       final agencyId = state.agencyCardMKHResponse?.id ?? 0;
 
@@ -369,7 +374,7 @@ class CardRegisterCubit extends Cubit<CardRegisterState> {
         ) ==
         null;
 
-    final isNameValid = ValidationHelper.specialCharactersAndEmpty(
+    final isNameValid = ValidationHelper.requiredValidAndNotNum(
           payload.nameOwnerNew,
           'Tên chủ sở hữu',
         ) ==

@@ -4,27 +4,48 @@ part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit({
-    required CharacterUseCase useCase,
-  })  : _characterUseCase = useCase,
+    required RicebookUsecase ricebookUsecase,
+  })  : _ricebookUsecase = ricebookUsecase,
         super(const HomeState());
 
-  final CharacterUseCase _characterUseCase;
+  final RicebookUsecase _ricebookUsecase;
 
-  Future<void> fetchNextPage() async {
-    if (state.hasReachedEnd) return;
+  Future<void> init() async {
+    await Future.wait([
+      fetchRiceBookPackages(),
+    ]);
+  }
 
-    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+  Future<void> fetchRiceBookPackages({
+    int page = 1,
+    int pageSize = 10,
+  }) async {
+    emit(state.copyWith(
+      onFetchRiceBookPackages: FormzSubmissionStatus.inProgress,
+    ));
 
-    final list =
-        await _characterUseCase.getCharacterAction(page: state.currentPage);
+    try {
+      final response = await _ricebookUsecase.fetchRiceBookPackages(
+        page: page,
+        pageSize: pageSize,
+      );
 
-    emit(
-      state.copyWith(
-        status: FormzSubmissionStatus.success,
-        hasReachedEnd: list.isEmpty,
-        currentPage: state.currentPage + 1,
-        characters: List.of(state.characters)..addAll(list),
-      ),
-    );
+      emit(
+        state.copyWith(
+          onFetchRiceBookPackages: FormzSubmissionStatus.success,
+          packages: [
+            ...state.packages,
+            ...response?.certProducts ?? [],
+          ],
+          canLoadMorepackages: response?.certProducts?.length == 10,
+          packagesPage: state.packagesPage + 1,
+        ),
+      );
+    } catch (e) {
+      emit(state.copyWith(
+        onFetchRiceBookPackages: FormzSubmissionStatus.failure,
+        error: e.toString(),
+      ));
+    }
   }
 }

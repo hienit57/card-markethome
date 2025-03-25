@@ -1,36 +1,30 @@
 import 'package:card_markethome/index.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   static const routeName = '/home';
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.colorF0F9FF,
-      body: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => CardClassCubit(
-              cardUsecase: context.read<CardUsecase>(),
-            ),
-          ),
-          BlocProvider(
-            create: (context) => CardInforCubit(
-              cardUsecase: context.read<CardUsecase>(),
-            ),
-          ),
-          BlocProvider(
-            create: (context) => RicebookCubit(
-              ricebookUsecase: context.read<RicebookUsecase>(),
-            )..init(),
-          ),
-        ],
+      body: BlocProvider(
+        create: (context) => HomeCubit(
+          ricebookUsecase: context.read<RicebookUsecase>(),
+        )..init(),
         child: const CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: CardOverviewPage(),
+              child: CardInforWidget(),
+            ),
+            SliverToBoxAdapter(
+              child: CardClassWidget(),
             ),
             SliverToBoxAdapter(
               child: HomeConvertDOneWidget(),

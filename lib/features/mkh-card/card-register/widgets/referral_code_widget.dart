@@ -42,14 +42,24 @@ class ReferralCodeWidget extends StatelessWidget {
                     final barCode = await Navigation.shared
                         .push(path: NavigationRouter.barCodeScanner.path);
 
-                    final barCodeData = jsonDecode(barCode);
+                    // Kiểm tra ký tự đầu tiên có phải là số
+                    if (barCode.isNotEmpty &&
+                        RegExp(r'[0-9]').hasMatch(barCode[0])) {
+                      context.showToastMessage(
+                        'Mã QR không hợp lệ',
+                        ToastMessageType.error,
+                      );
+                      return;
+                    }
 
+                    final barCodeData = jsonDecode(barCode);
                     final pDoneId = barCodeData['pDoneId'];
 
                     if (pDoneId != null) {
                       cubit.fetchMarshopByUserId(
                         pDoneId: pDoneId,
                       );
+                      return;
                     }
                   },
                   child: const AppImage(
@@ -93,8 +103,14 @@ class ReferralCodeWidget extends StatelessWidget {
                             },
                             suffix: cubit.referralCtrl.text.isNotEmpty
                                 ? (state.marshopByUserIdResponse?.id == null
-                                    ? Assets.lib_assets_icons_ic_info_circle
-                                        .svg(color: AppColors.red500)
+                                    ? const AppImage(
+                                        assetImage: Assets
+                                            .lib_assets_icons_ic_info_circle,
+                                        width: 16,
+                                        height: 16,
+                                        fit: BoxFit.fill,
+                                        color: AppColors.red500,
+                                      )
                                     : GestureDetector(
                                         onTap: () {
                                           cubit.referralCtrl.clear();
@@ -102,9 +118,14 @@ class ReferralCodeWidget extends StatelessWidget {
                                             pDoneId: cubit.referralCtrl.text,
                                           );
                                         },
-                                        child: Assets
-                                            .lib_assets_icons_ic_close_circle
-                                            .svg(color: AppColors.black),
+                                        child: const AppImage(
+                                          assetImage: Assets
+                                              .lib_assets_icons_ic_close_circle,
+                                          width: 16,
+                                          height: 16,
+                                          fit: BoxFit.fill,
+                                          color: AppColors.black,
+                                        ),
                                       ))
                                 : null,
                           ),

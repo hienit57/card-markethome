@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:card_markethome/index.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 // import 'package:image_picker/image_picker.dart';
@@ -23,7 +25,11 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
     if (mounted &&
         (await Navigation.getCurrentRoute() ==
             NavigationRouter.barCodeScanner.path)) {
-      Navigation.pop(context, result: barcodes.barcodes.first.displayValue);
+      final barCode = barcodes.barcodes.first.displayValue;
+
+      if (barCode != null) {
+        Navigation.pop(context, result: barCode);
+      }
     }
   }
 
@@ -38,6 +44,30 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
   }
 
   @override
+  Future<void> dispose() async {
+    super.dispose();
+
+    WidgetsBinding.instance.removeObserver(this);
+
+    // Đảm bảo dừng scanner và hủy subscription
+    await controller.stop();
+    await _subscription?.cancel();
+    _subscription = null;
+
+    await controller.dispose();
+  }
+
+  @override
+  void reassemble() {
+    super.reassemble();
+    if (Platform.isAndroid) {
+      controller.start();
+    } else if (Platform.isIOS) {
+      controller.stop();
+    }
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (!controller.value.isInitialized) {
       return;
@@ -47,11 +77,15 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
       case AppLifecycleState.paused:
+        unawaited(_subscription?.cancel());
+        _subscription = null;
+        unawaited(controller.stop());
         return;
       case AppLifecycleState.resumed:
-        _subscription = controller.barcodes.listen(_handleBarcode);
-
-        unawaited(controller.start());
+        if (_subscription == null) {
+          _subscription = controller.barcodes.listen(_handleBarcode);
+          unawaited(controller.start());
+        }
       case AppLifecycleState.inactive:
         unawaited(_subscription?.cancel());
         _subscription = null;
@@ -175,15 +209,6 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
     );
   }
 
-  @override
-  Future<void> dispose() async {
-    WidgetsBinding.instance.removeObserver(this);
-    unawaited(_subscription?.cancel());
-    _subscription = null;
-    super.dispose();
-    await controller.dispose();
-  }
-
   Widget _buildQRWrapper() {
     return MobileScanner(
       controller: controller,
@@ -233,12 +258,58 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
       },
       onDetect: (BarcodeCapture capture) {
         final List<Barcode> barcodes = capture.barcodes;
+        Future.delayed(const Duration(seconds: 1), () {
+          for (final Barcode barcode in barcodes) {
+            debugPrint('Barcode found! ${barcode.rawValue}');
+            final String value = barcode.rawValue ?? '';
 
-        for (final Barcode barcode in barcodes) {
-          debugPrint('Barcode found! ${barcode.rawValue}');
-          final String value = barcode.rawValue ?? '';
-          //_handleListener(value);
-        }
+            // try {
+            //   if (_processing) {
+            //     return;
+            //   }
+            //   _processing = true;
+            //   if (value.isEmpty) {
+            //     return;
+            //   }
+
+            //   controller.stop();
+
+            //   ///BA muốn hiển thị ngay tại đây
+            //   final barCodeData = jsonDecode(value);
+            //   debugPrint('Parsed JSON data: $barCodeData'); // Thêm log để debug
+
+            //   final pDoneId = barCodeData['pDoneId'];
+            //   debugPrint('pDoneId value: $pDoneId'); // Thêm log để debug
+
+            //   if (pDoneId == null || pDoneId.toString().isEmpty) {
+            //     debugPrint('Barcode found but pDoneId is null or empty!');
+            //     _processing = false;
+
+            //     showToastMessage(
+            //       'Mã QR không hợp lệ',
+            //       ToastMessageType.error,
+            //     );
+            //   }
+
+            //   Future.delayed(
+            //     const Duration(milliseconds: 300),
+            //     () {
+            //       controller.start();
+            //     },
+            //   );
+            // } catch (e) {
+            //   _processing = false;
+
+            //   showToastMessage('Mã QR không hợp lệ', ToastMessageType.error);
+            //   Future.delayed(
+            //     const Duration(seconds: 1),
+            //     () {
+            //       controller.start();
+            //     },
+            //   );
+            // }
+          }
+        });
       },
       overlayBuilder: (context, constraints) =>
           QRScannerOverlay(overlayColour: AppColors.black.withOpacity(0.5)),

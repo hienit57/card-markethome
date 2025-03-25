@@ -60,13 +60,14 @@ class CardOwnerInforWidget extends StatelessWidget {
           title: 'Tên chủ thẻ',
           placeHolder: 'Nhập tên chủ thẻ',
           controller: cubit.nameCtrl,
+          focusNode: cubit.nameFocusNode,
           onChanged: (value) {
             cubit.debounceHelper.run(() {
               cubit.updatePayload();
             });
           },
           validator: (value) =>
-              ValidationHelper.characterOnly(value, 'họ và tên'),
+              ValidationHelper.requiredValidAndNotNum(value, 'Họ và tên'),
         ),
         const SizedBox(height: 16),
         TitleTextfieldWidget(
@@ -101,21 +102,14 @@ class CardOwnerInforWidget extends StatelessWidget {
   Widget _addressSelector(BuildContext context) {
     final cubit = context.read<CardRegisterCubit>();
 
-    return BlocBuilder<AddressSelectorCubit, AddressSelectorState>(
-      buildWhen: (previous, current) =>
-          previous.wardSelected != current.wardSelected,
-      builder: (context, state) {
-        return AddressSelectorWidget(
-          onSelectAddress:
-              (country, province, district, ward, specificAddress) {
-            cubit.setNewAddress(
-              country,
-              province,
-              district,
-              ward,
-              specificAddress,
-            );
-          },
+    return AddressSelectorWidget(
+      onSelectAddress: (country, province, district, ward, specificAddress) {
+        cubit.setNewAddress(
+          country,
+          province,
+          district,
+          ward,
+          specificAddress,
         );
       },
     );

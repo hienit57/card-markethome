@@ -1,5 +1,5 @@
-import 'dart:io';
 import 'package:card_markethome/index.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:screenshot/screenshot.dart';
 
 class CardRegisterPaymentPage extends StatefulWidget {
@@ -111,99 +111,7 @@ class _CardRegisterPaymentPageState extends State<CardRegisterPaymentPage> {
                     ),
                   ),
                   onPressed: () async {
-                    try {
-                      final image = await screenshotController.capture();
-
-                      if (image == null) {
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Failed to capture QR code image'),
-                            ),
-                          );
-                        }
-                        return;
-                      }
-
-                      // Get the pictures directory
-                      final directory =
-                          Directory('/storage/emulated/0/Pictures');
-                      if (!await directory.exists()) {
-                        await directory.create(recursive: true);
-                      }
-
-                      final imagePath =
-                          '${directory.path}/qr_code_${DateTime.now().millisecondsSinceEpoch}.png';
-                      final imageFile = File(imagePath);
-
-                      await imageFile.writeAsBytes(image);
-
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('QR code saved to gallery'),
-                          ),
-                        );
-                      }
-                    } catch (e) {
-                      print('error: $e');
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Failed to save QR code: $e'),
-                          ),
-                        );
-                      }
-                    }
-
-                    // await showDialog(
-                    //   context: context,
-                    //   builder: (context) => AlertDialog(
-                    //     content: Column(
-                    //       mainAxisSize: MainAxisSize.min,
-                    //       children: [
-                    //         Screenshot(
-                    //           controller: screenshotController,
-                    //           child: ClipRRect(
-                    //             borderRadius: BorderRadius.circular(8),
-                    //             child: AppImage(
-                    //               imageUrl:
-                    //                   'https://img.vietqr.io/image/${billInfo?.bankAccount?.bank?.code ?? 0}-${billInfo?.bankAccount?.bankNumber ?? ''}-qr-only.jpg?amount=${billInfo?.vndAmount ?? 0}&addInfo=${billInfo?.content ?? ''}',
-                    //               height: 300,
-                    //               width: 300,
-                    //               fit: BoxFit.cover,
-                    //             ),
-                    //           ),
-                    //         ),
-                    //         const SizedBox(height: 16),
-                    //         ElevatedButton(
-                    //           onPressed: () async {
-                    //             final image =
-                    //                 await screenshotController.capture();
-                    //             if (image != null) {
-                    //               final directory =
-                    //                   await getApplicationDocumentsDirectory();
-                    //               final imagePath =
-                    //                   '${directory.path}/qr_code.png';
-                    //               final imageFile = File(imagePath);
-                    //               await imageFile.writeAsBytes(image);
-
-                    //               if (context.mounted) {
-                    //                 ScaffoldMessenger.of(context).showSnackBar(
-                    //                   const SnackBar(
-                    //                       content: Text(
-                    //                           'QR code saved successfully')),
-                    //                 );
-                    //                 Navigator.pop(context);
-                    //               }
-                    //             }
-                    //           },
-                    //           child: Text(S.current.save_qr_code),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // );
+                    saveQrImage(context);
                   },
                   icon: const Icon(Icons.download, color: Colors.white),
                   label: Text(
@@ -217,6 +125,36 @@ class _CardRegisterPaymentPageState extends State<CardRegisterPaymentPage> {
         },
       ),
     );
+  }
+
+  Future<void> saveQrImage(BuildContext context) async {
+    try {
+      // Capture screenshot of the QR code
+      final image = await screenshotController.capture();
+
+      if (image == null) {
+        if (context.mounted) {
+          showToastMessage('Lưu mã QR thất bại', ToastMessageType.error);
+        }
+        return;
+      }
+
+      // Save to gallery
+      final result = await ImageGallerySaver.saveImage(
+        image,
+        name: 'QR_payment_${DateTime.now().millisecondsSinceEpoch}',
+      );
+
+      if (context.mounted) {
+        if (result['isSuccess']) {
+          showToastMessage('Lưu mã QR thành công', ToastMessageType.success);
+        } else {
+          showToastMessage('Lưu mã QR thất bại', ToastMessageType.error);
+        }
+      }
+    } catch (e) {
+      showToastMessage('Lưu mã QR thất bại', ToastMessageType.error);
+    }
   }
 
   Widget _buildActionButtons() {

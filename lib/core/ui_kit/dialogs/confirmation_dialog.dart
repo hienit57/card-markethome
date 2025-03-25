@@ -181,4 +181,8 @@ class ConfirmationDialog extends StatelessWidget {
       },
     );
   }
+
+  static void hide(BuildContext context) {
+    Navigator.of(context).pop();
+  }
 }
