@@ -108,11 +108,13 @@ class _AppBottomSheetState extends State<AppBottomSheet> {
           children: [
             GestureDetector(
               onTap: () => Navigation.pop(context),
-              child: SizedBox(
+              child: const SizedBox(
                 width: 20,
                 height: 20,
                 child: Center(
-                  child: Assets.lib_assets_icons_ic_arrow_back.svg(),
+                  child: AppImage(
+                    assetImage: Assets.lib_assets_icons_ic_arrow_back,
+                  ),
                 ),
               ),
             ),
@@ -151,7 +153,8 @@ class _AppBottomSheetState extends State<AppBottomSheet> {
                 padding: const EdgeInsets.only(right: 16),
                 child: GestureDetector(
                   onTap: () => Navigation.pop(context),
-                  child: Assets.lib_assets_icons_ic_close.svg(
+                  child: const AppImage(
+                    assetImage: Assets.lib_assets_icons_ic_close,
                     color: AppColors.textSecondary,
                   ),
                 ),
